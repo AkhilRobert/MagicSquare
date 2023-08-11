@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 )
 
@@ -47,24 +48,31 @@ func buildSquare(list *[][]int, dimension int) {
 func printSquare(list [][]int) {
 	for i, row := range list {
 		for j := range row {
-			fmt.Printf("  %d  ", list[i][j])
+			fmt.Printf("%-6d", list[i][j])
 		}
 		fmt.Println()
 	}
 }
 
 func main() {
-	fmt.Print("Enter the size of the square : ")
-	var input string
-	fmt.Scanln(&input)
+	if len(os.Args) < 2 {
+		fmt.Fprintln(os.Stderr, os.Args[0]+": square size not specified")
+		os.Exit(1)
+	}
 
-	size, err := strconv.ParseInt(input, 10, 32)
+	size, err := strconv.ParseInt(os.Args[1], 10, 32)
 	if err != nil {
-		panic("something went wrong when parsing the input")
+		panic("something went wrong when parsing the square size")
+	}
+
+	if size <= 2 {
+		fmt.Fprintln(os.Stderr, "ERROR: square size should be greater than 2")
+		os.Exit(1)
 	}
 
 	if size%2 == 0 {
-		panic("even order square are not supported")
+		fmt.Fprintln(os.Stderr, "ERROR: only odd size squares are supported")
+		os.Exit(1)
 	}
 
 	list := make([][]int, size)
