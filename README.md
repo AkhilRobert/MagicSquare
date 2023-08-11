@@ -5,7 +5,8 @@ CLI tool to construct a magic square
 ## Quick Start
 
 ```console
-$ ./magicsquare <size>
+go build
+./magicsquare <size>
 ```
 
 ## Limitations
